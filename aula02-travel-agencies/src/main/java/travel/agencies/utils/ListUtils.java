@@ -17,8 +17,39 @@ public class ListUtils {
     public static <T>
     T smaller(Iterable<T> elems, Comparator<T> cmp) {
         T min = null;
+        /*
+        for( T elem : elems) {
+            if (min == null || cmp.compare(elem, min) < 0)
+                min = elem;
+        }
+         if (min == null) throw new InvalidParameterException();
 
-        // A COMPLETAR!
+        */
+
+        /*
+        Iterator<T> it = elems.iterator();
+
+        while(it.hasNext()) {
+            T elem = it.next();
+            if (min == null || cmp.compare(elem, min) < 0)
+                min = elem;
+        }
+         if (min == null) throw new InvalidParameterException();
+
+        */
+
+        Iterator<T> it = elems.iterator();
+
+        if (!it.hasNext()) throw new InvalidParameterException();
+        min = it.next();
+
+        while(it.hasNext()) {
+            T elem = it.next();
+            if (cmp.compare(elem, min) < 0)
+                min = elem;
+        }
+
+
         return min;
     }
 
@@ -45,4 +76,6 @@ public class ListUtils {
        // A COMPLETAR!
         return s;
     }
+
+
 }

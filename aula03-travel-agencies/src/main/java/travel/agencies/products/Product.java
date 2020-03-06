@@ -6,15 +6,22 @@ public abstract class Product {
     private String name;
     protected LocalDate startDate, endDate;
 
+    /*
     public static int totalSimpleProducts(Iterable<Product> products) {
         int count = 0;
         for(Product p : products) {
            if (p instanceof SimpleProduct) count++;
-           count +=  totalSimpleProducts(p);
+           else {
+                if (p instanceof Program) {
+                    Program prog = (Program) p;
+                    count +=  totalSimpleProducts(prog);
+                }
+           }
         }
         return count;
 
     }
+   */
 
     public LocalDate getStartDate() { return startDate; }
 

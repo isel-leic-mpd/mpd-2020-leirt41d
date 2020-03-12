@@ -13,7 +13,9 @@ public class WeatherTests {
         WeatherWebApi weather = new WeatherWebApi();
 
         Iterable<WeatherInfo> past =
-                weather.pastWeather(lisbonLat, lisbonLong, of(2019, 1, 1), of(2019, 2, 1));
+                weather.pastWeather(lisbonLat, lisbonLong,
+                        of(2019, 1, 1),
+                        of(2019, 2, 1));
         int count=0;
         for(WeatherInfo wi : past) {
             System.out.println(wi);

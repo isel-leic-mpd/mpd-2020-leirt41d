@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
 
 
 public class ListUtils {
@@ -70,9 +71,11 @@ public class ListUtils {
      * @param val
      * @return
      */
-    public static <T> int  sum(Iterable<T> elems, ToDoubleFunction<T> val) {
+    public static <T> int  sum(Iterable<T> elems, ToIntFunction<T> val) {
         int s = 0;
 
+        for(T elem : elems)
+            s += val.applyAsInt(elem);
        // A COMPLETAR!
         return s;
     }

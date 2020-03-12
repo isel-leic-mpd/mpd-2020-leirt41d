@@ -19,9 +19,8 @@ public abstract class Product {
            }
         }
         return count;
-
     }
-   */
+    */
 
     public LocalDate getStartDate() { return startDate; }
 

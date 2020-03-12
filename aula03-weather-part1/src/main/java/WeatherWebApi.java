@@ -17,8 +17,10 @@ public class WeatherWebApi {
      */
     private static String getApiKeyFromResources() {
         try {
-            URL keyFile = ClassLoader.getSystemResource("worldweatheronline-app-key.txt");
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(keyFile.openStream()))) {
+            URL keyFile =
+                    ClassLoader.getSystemResource("worldweatheronline-app-key.txt");
+            try (BufferedReader reader =
+                         new BufferedReader(new InputStreamReader(keyFile.openStream()))) {
                 return reader.readLine();
             }
 
@@ -37,6 +39,7 @@ public class WeatherWebApi {
     }
 
     /**
+     * E.g. http://api.worldweatheronline.com/premium/v1/past-weather.ashx?q=37.017,-7.933&date=2019-01-01&enddate=2019-01-30&tp=24&format=csv&key=10a7e54b547c4c7c870162131192102
      * Get WeatherInfo's from a GPS local given a date interval
      * @param latitude
      * @param longitude
@@ -44,7 +47,9 @@ public class WeatherWebApi {
      * @param to
      * @return
      */
-    public Iterable<WeatherInfo> pastWeather( double latitude, double longitude, LocalDate from, LocalDate to) {
+    public Iterable<WeatherInfo> pastWeather(
+            double latitude, double longitude,
+            LocalDate from, LocalDate to) {
         String query = latitude + "," + longitude;
         String path =  WEATHER_SERVICE + String.format(WEATHER_PAST_TEMPLATE, query, from, to, API_KEY);
 
@@ -75,7 +80,8 @@ public class WeatherWebApi {
      * @param to
      * @return
      */
-    public Iterable<DayInfo> pastDays( double latitude, double longitude, LocalDate from, LocalDate to) {
+    public Iterable<DayInfo> pastDays( double latitude,
+               double longitude, LocalDate from, LocalDate to) {
         String query = latitude + "," + longitude;
         String path =  WEATHER_SERVICE + String.format(WEATHER_PAST_TEMPLATE, query, from, to, API_KEY);
 
@@ -87,6 +93,7 @@ public class WeatherWebApi {
     }
 
     /**
+     * e.g. http://api.worldweatheronline.com/premium/v1/search.ashx?query=Oporto&format=tab&key=10a7e54b547c4c7c870162131192102
      * Get local info given the name of the local
      * @param location
      * @return

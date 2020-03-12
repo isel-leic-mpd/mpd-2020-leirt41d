@@ -1,7 +1,11 @@
 package travel.agencies.products;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.ToIntBiFunction;
+import java.util.function.ToIntFunction;
+
 import static travel.agencies.utils.ListUtils.smaller;
 import static travel.agencies.utils.ListUtils.larger;
 import static travel.agencies.utils.ListUtils.sum;
@@ -9,9 +13,27 @@ import static travel.agencies.utils.ListUtils.sum;
 public class Program extends Product {
     private List<Product> products;
 
-    public Program(String name, Product ... products) {
-        // A COMPLETAR!
+    // possiblle solution for class Program in Exeercise 1
+    private static LocalDate getFirstDate(Product[] products) {
+        return smaller(Arrays.asList(products),
+                (p1,p2) -> p1.getStartDate().compareTo(p2.getStartDate())).startDate;
     }
+
+    private static LocalDate getLastDate(Product[] products) {
+        return larger(Arrays.asList(products),
+                (p1,p2) -> p1.getEndDate().compareTo(p2.getEndDate())).endDate;
+    }
+
+    public Program(String name, Product ... products) {
+        super(name, getFirstDate(products), getLastDate(products));
+        this.products  = Arrays.asList(products);
+    }
+
+    @Override
+    public double getPrice() {
+        return getPrice3();
+    }
+
 
     /**
      * Example:
@@ -45,9 +67,72 @@ public class Program extends Product {
      * @return
      */
     @Override
-    public String getDescription( String prefix ){
-        // A COMPLETAR!
-        return null;
+    public String getDescription( String prefix ) {
+        StringBuilder sb =
+                new StringBuilder(super.getDescription(prefix));
+        //sb.append(System.lineSeparator());
+        sb.append('\n');
+        for(Product p : products) {
+            sb.append(p.getDescription(prefix + "  "));
+            //sb.append(System.lineSeparator());
+            sb.append('\n');
+        }
+        sb.append(String.format("%sTOTAL: %.0f€", prefix, getPrice()));
+        return sb.toString();
     }
-    // A COMPLETAR!
+
+
+    // private class implementing  ToIntFunction<Product>
+    private class ProductToInt implements
+            ToIntFunction<Product> {
+
+        @Override
+        public int applyAsInt(Product value) {
+            return (int) value.getPrice();
+        }
+    }
+
+    //@Override
+    public double getPrice0() {
+        ToIntFunction<Product> converter = new ProductToInt();
+        return sum(products, converter);
+    }
+
+    // version with anonymous class
+    public double getPrice1() {
+
+        ToIntFunction<Product> converter =
+                new ToIntFunction<Product>() {
+                    @Override
+                    public int applyAsInt(Product value) {
+                        return (int) value.getPrice();
+                    }
+                };
+
+        return sum(products, converter );
+    }
+
+    // version with lambdas
+    public double getPrice2() {
+        /*
+        Verbose (with types) lambda
+        ToIntFunction<Product> converter =
+            (Product p) -> {
+                return (int) p.getPrice();
+            };
+
+         */
+        // lambda expression with types inference
+        ToIntFunction<Product> converter =
+                p -> (int) p.getPrice();
+        return sum(products, converter);
+    }
+
+    // version with method reference
+    public double getPrice3() {
+        ToIntFunction<Product> converter =
+                Product::getIntPrice;
+        return sum(products, converter);
+    }
+
 }

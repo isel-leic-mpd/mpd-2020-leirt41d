@@ -13,7 +13,7 @@ import static travel.agencies.utils.ListUtils.sum;
 public class Program extends Product {
     private List<Product> products;
 
-    // possiblle solution for class Program in Exeercise 1
+    // Possible solution for class Program in Exercise 1
     private static LocalDate getFirstDate(Product[] products) {
         return smaller(Arrays.asList(products),
                 (p1,p2) -> p1.getStartDate().compareTo(p2.getStartDate())).startDate;

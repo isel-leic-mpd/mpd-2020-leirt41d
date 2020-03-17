@@ -61,7 +61,9 @@ public class WeatherWebApi {
      * @param period
      * @return
      */
-    public Iterable<WeatherInfo> pastWeather( double latitude, double longitude, LocalDate from, LocalDate to, int period) {
+    public Iterable<WeatherInfo> pastWeather( double latitude,
+                          double longitude,
+                      LocalDate from, LocalDate to, int period) {
         String query = latitude + "," + longitude;
         String path =  WEATHER_SERVICE + String.format(WEATHER_PAST_TEMPLATE, query, from, to, period,API_KEY);
 
@@ -132,16 +134,39 @@ public class WeatherWebApi {
      * @param to
      * @return
      */
-    public Iterable<DayInfo> pastDays(double latitude, double longitude, LocalDate from, LocalDate to) {
+    public Iterable<DayInfo> pastDays(double latitude,
+                          double longitude,
+                          LocalDate from, LocalDate to) {
         String query = latitude + "," + longitude;
         String path =  WEATHER_SERVICE + String.format(WEATHER_PAST_TEMPLATE, query, from, to, 24, API_KEY);
 
         List<DayInfo> result = new ArrayList<>(); // where the dto.WeatherInfo instances are collected
         Iterable<String> src = req.getContent(path);
 
-        // TO COMPLETE
+        // the new way
+        Iterable<String> lines = req.getContent(path);
 
+        Iterator<String> it = lines.iterator();
+        String line;
+
+        while(it.hasNext()  ) {
+            line = it.next();
+            if (!line.startsWith("#")) break;
+        }
+
+        boolean toRead = true;
+        while(it.hasNext()  ) {
+            line = it.next();
+            if (toRead) {
+                result.add(DayInfo.valueOf(line));
+                toRead = false;
+            }
+            else {
+                toRead = true;
+            }
+        }
         return result;
+
     }
 
     /**

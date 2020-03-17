@@ -7,7 +7,7 @@ public class WeatherInfo {
     private final static int TEMPC = 2;
     private final static int DESCRIPTION = 10;
     private final static int PRECIP_MM = 11;
-    private final static int FEELS_LIKE_C = 24;
+    private final static int FEELS_LIKE_C = 23;
 
 
     private final LocalDate date;     // index 0

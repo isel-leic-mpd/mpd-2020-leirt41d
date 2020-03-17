@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+
 public class DayInfo {
     // indexes corresponding to fields to use
     private static final int DATE       =   0;

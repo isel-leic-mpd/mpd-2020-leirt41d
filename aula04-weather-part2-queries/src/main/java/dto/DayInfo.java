@@ -25,29 +25,54 @@ public class DayInfo {
     private static final int MOON_ILLUM =   10;
 
     private LocalDate date;
-    private int maxTempC;
-    private int minTempC ;
-    private LocalTime sunrise;
-    private LocalTime sunset;
-    private LocalTime moonrise;
-    private LocalTime moonset;
-    private String moon_phase;
-    private int moon_illumination;
+    private int maxTemp;
+    private int minTemp;
+    private LocalTime sunRise;
+    private LocalTime sunSet;
+    private LocalTime moonRise;
+    private LocalTime moonSet;
+    private String moonPhase;
+    private int moonIllum;
 
-    //A COMPLETAR!
+    public DayInfo(LocalDate date, int minTemp, int maxTemp,
+                   LocalTime sunRise, LocalTime sunSet,
+                   LocalTime moonRise, LocalTime moonSet,
+                   String moonPhase, int moonIllum) {
+        this.date = date;
+        this.minTemp = minTemp;
+        this.maxTemp = maxTemp;
+        this.sunRise = sunRise;
+        this.sunSet = sunSet;
+        this.moonRise = moonRise;
+        this.moonSet = moonSet;
+        this.moonPhase = moonPhase;
+        this.moonIllum = moonIllum;
+    }
+
+    // acessors
+
+    public LocalDate getDate() { return date; }
+    public int getMinTemp() { return minTemp; }
+    public int getMaxTemp() { return maxTemp; }
+    public LocalTime getSunRise() { return sunRise; }
+    public LocalTime getSunSet() { return sunSet; }
+    public LocalTime getMoonRise() { return moonRise; }
+    public LocalTime getMoonSet() { return moonRise; }
+    public String getMoonPhase() { return moonPhase; }
+    public int getMoonIllum() { return moonIllum; }
 
 
     @Override
     public String toString() {
         return "{"
                 + date
-                + ", max="      + maxTempC
-                + ", min="      + minTempC
-                + ", sunrise="  + sunrise
-                + ", sunset="   + sunset
-                + ", moonrise=" + moonrise
-                + ", moonset="  + moonset
-                + ", illum="    + moon_illumination
+                + ", max="      + maxTemp
+                + ", min="      + minTemp
+                + ", sunrise="  + sunRise
+                + ", sunset="   + sunSet
+                + ", moonrise=" + moonRise
+                + ", moonset="  + moonSet
+                + ", illum="    + moonIllum
                 + "}";
     }
 
@@ -67,7 +92,17 @@ public class DayInfo {
     }
 
     public static DayInfo valueOf(String line) {
-         // A COMPLETAR!
-        return null;
+        String[] parts = line.split(",");
+
+        return new DayInfo(
+                LocalDate.parse(parts[DATE]),
+                Integer.parseInt(parts[MIN_TEMPC]),
+                Integer.parseInt(parts[MAX_TEMPC]),
+                parseTime(parts[SUNRISE]),
+                parseTime(parts[SUNSET]),
+                parseTime(parts[MOONRISE]),
+                parseTime(parts[MOONSET]),
+                parts[MOON_PHASE],
+                Integer.parseInt(parts[MOON_ILLUM]));
     }
 }

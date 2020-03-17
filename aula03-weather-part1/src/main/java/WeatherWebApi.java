@@ -62,7 +62,21 @@ public class WeatherWebApi {
 
             // the stream used to get the response to the service request
             InputStream respStream = url.openStream();
+            String line;
+            BufferedReader reader =
+                    new BufferedReader(
+                            new InputStreamReader(respStream));
 
+            boolean toRead = false;
+
+            while((line = reader.readLine()) != null &&
+                    line.startsWith("#"));
+
+            while((line = reader.readLine()) != null) {
+                if (toRead)
+                    result.add(WeatherInfo.valueOf(line));
+                toRead = !toRead;
+            }
         }
         catch(IOException e) {
             throw new UncheckedIOException(e);
@@ -113,13 +127,12 @@ public class WeatherWebApi {
         String path =  WEATHER_SERVICE + String.format(WEATHER_SEARCH_TEMPLATE, location, API_KEY);
         List<Location> result = new ArrayList<>(); // where the WeatherInfo instances are collected
 
-        try {
+       try {
             // used to do the HTTP request to worldweatheronline service
             URL url = new URL(path);
 
             // the stream used to get the response to the service request
             InputStream respStream = url.openStream();
-
             String line;
 
             BufferedReader reader =

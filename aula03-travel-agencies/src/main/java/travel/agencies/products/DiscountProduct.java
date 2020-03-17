@@ -7,15 +7,18 @@ public class DiscountProduct extends Product {
     int discount;
 
     private class PromoIterator implements Iterator<Product> {
-
+        private boolean first = true;
         @Override
         public boolean hasNext() {
-            return false;
+            return first;
         }
 
         @Override
         public Product next() {
-           return null;
+           if (!hasNext())
+               throw new IllegalStateException();
+           first = false;
+           return promoProduct;
         }
     }
 

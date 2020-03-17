@@ -10,23 +10,20 @@ import java.time.format.DateTimeFormatter;
 public class WeatherInfo {
     // indexes
     private final static int DATE = 0;
-    private final static int TIME = 1;
     private final static int TEMPC = 2;
     private final static int DESCRIPTION = 10;
     private final static int PRECIP_MM = 11;
-    private final static int FEELS_LIKE_C = 24;
+    private final static int FEELS_LIKE_C = 23;
 
 
     private final LocalDate date;     // index 0
-    private final LocalTime time;     // index 0
     private final int tempC;          // index 2
     private final String description; // index 10
     private final double  precipMM;   // index 11
     private final int feelsLikeC;     // index 24
 
-    public WeatherInfo(LocalDate date, LocalTime time, int tempC, String description, double precipMM, int feelsLikeC) {
+    public WeatherInfo(LocalDate date, int tempC, String description, double precipMM, int feelsLikeC) {
         this.date = date;
-        this.time = time;
         this.tempC = tempC;
         this.description = description;
         this.precipMM = precipMM;
@@ -34,24 +31,21 @@ public class WeatherInfo {
     }
 
     public LocalDate getLocalDate() { return date; }
-    public LocalTime getLocalTime() { return time; }
     public int getTempC() { return tempC; }
     public String getDescription() { return description; }
     public double getPrecipMM() { return precipMM; }
     public int getFeelsLikeC() { return feelsLikeC; }
 
     /**
-     * Create a dto.WeatherInfo from a line with csv parts
+     * Create a WeatherInfo from a line with csv parts
      * @param line
-     * @return A dto.WeatherInfo instance
+     * @return A WeatherInfo instance
      */
     public static WeatherInfo valueOf(String line) {
         String[] parts = line.split(",");
 
-        int time = Integer.parseInt(parts[TIME]);
         return new WeatherInfo(
                 LocalDate.parse(parts[DATE]),
-                LocalTime.of(time / 100, time % 100),
                 Integer.parseInt(parts[TEMPC]),
                 parts[DESCRIPTION],
                 Double.valueOf(parts[PRECIP_MM]),
@@ -60,9 +54,8 @@ public class WeatherInfo {
 
     @Override
     public  String toString() {
-        return "dto.WeatherInfo{" +
+        return "WeatherInfo{" +
                 date +
-                ", time=" + time +
                 ", tempC=" + tempC +
                 ", '" + description + '\'' +
                 ", precipMM=" + precipMM +

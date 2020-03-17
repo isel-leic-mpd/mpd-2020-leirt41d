@@ -8,7 +8,7 @@ import static travel.agencies.utils.ListUtils.smaller;
 import static travel.agencies.utils.ListUtils.larger;
 import static travel.agencies.utils.ListUtils.sum;
 
-public class Program extends Product implements Iterable<Product>  {
+public class Program extends Product   {
     private List<Product> products;
 
     private static LocalDate getFirstDate(Product[] products) {

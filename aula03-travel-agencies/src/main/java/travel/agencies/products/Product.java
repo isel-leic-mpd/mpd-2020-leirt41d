@@ -5,12 +5,12 @@ import java.util.Iterator;
 
 
 public abstract class Product implements
-        Comparable<Product> {
+        Comparable<Product>,
+        Iterable<Product>{
     private String name;
     protected LocalDate startDate, endDate;
 
     private static class EmptyIterator implements Iterator<Product> {
-
         @Override
         public boolean hasNext() {
             return false;
@@ -19,7 +19,6 @@ public abstract class Product implements
         @Override
         public Product next() {
             throw new IllegalStateException();
-
         }
     }
 
@@ -31,11 +30,13 @@ public abstract class Product implements
         for(Product p : products) {
            if (p instanceof SimpleProduct) count++;
            else {
-
+               /*
                 if (p instanceof Program) {
                     Program prog = (Program) p;
                     count +=  totalSimpleProducts(prog);
                 }
+                */
+               count +=  totalSimpleProducts(p);
            }
         }
         return count;
@@ -69,6 +70,11 @@ public abstract class Product implements
     @Override
     public int compareTo(Product p) {
         return name.compareTo(p.getName());
+    }
+
+    @Override
+    public Iterator<Product> iterator() {
+        return  emptyIterator;
     }
 
 }

@@ -21,6 +21,40 @@ public class DayInfo {
     private static final int MOON_PHASE =   9;
     private static final int MOON_ILLUM =   10;
 
+    private LocalDate date;
+    private int minTemp,maxTemp;
+    private LocalTime sunRise, sunSet;
+    private LocalTime moonRise, moonSet;
+    private String moonPhase;
+    private int moonIllum; // percentage
+
+    public DayInfo(LocalDate date, int minTemp, int maxTemp,
+                   LocalTime sunRise, LocalTime sunSet,
+                   LocalTime moonRise, LocalTime moonSet,
+                   String moonPhase, int moonIllum) {
+        this.date = date;
+        this.minTemp = minTemp;
+        this.maxTemp = maxTemp;
+        this.sunRise = sunRise;
+        this.sunSet = sunSet;
+        this.moonRise = moonRise;
+        this.moonSet = moonSet;
+        this.moonPhase = moonPhase;
+        this.moonIllum = moonIllum;
+    }
+
+    // acessors
+
+    public LocalDate getDate() { return date; }
+    public int getMinTemp() { return minTemp; }
+    public int getMaxTemp() { return maxTemp; }
+    public LocalTime getSunRise() { return sunRise; }
+    public LocalTime getSunSet() { return sunSet; }
+    public LocalTime getMoonRise() { return moonRise; }
+    public LocalTime getMoonSet() { return moonRise; }
+    public String getMoonPhase() { return moonPhase; }
+    public int getMoonIllum() { return moonIllum; }
+
     /**
      * Use this method the time information to a LocalTime
      * @param time
@@ -35,6 +69,39 @@ public class DayInfo {
             return LocalTime.of(0,0,0);
         }
     }
+    /**
+     * Create a DayInfo from a line with csv parts
+     * @param line
+     * @return A DayInfo instance
+     */
+    public static DayInfo valueOf(String line) {
+        String[] parts = line.split(",");
 
-    // TO COMPLETE!
+        return new DayInfo(
+            LocalDate.parse(parts[DATE]),
+            Integer.parseInt(parts[MIN_TEMPC]),
+            Integer.parseInt(parts[MAX_TEMPC]),
+            parseTime(parts[SUNRISE]),
+            parseTime(parts[SUNSET]),
+            parseTime(parts[MOONRISE]),
+            parseTime(parts[MOONSET]),
+            parts[MOON_PHASE],
+            Integer.parseInt(parts[MOON_ILLUM]));
+    }
+
+    @Override
+    public String toString() {
+        return "DayInfo { " +
+                date + ',' +
+                minTemp + ',' +
+                maxTemp + ',' +
+                sunRise + ',' +
+                sunSet + ',' +
+                moonRise + ',' +
+                moonSet + ',' +
+                moonPhase + ',' +
+                moonIllum  +
+                '}';
+    }
+
 }

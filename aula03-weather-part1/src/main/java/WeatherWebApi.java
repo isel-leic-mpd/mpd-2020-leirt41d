@@ -63,7 +63,6 @@ public class WeatherWebApi {
             // the stream used to get the response to the service request
             InputStream respStream = url.openStream();
 
-            // TO COMPLETE!
         }
         catch(IOException e) {
             throw new UncheckedIOException(e);
@@ -87,8 +86,19 @@ public class WeatherWebApi {
 
 
         List<DayInfo> result = new ArrayList<>(); // where the WeatherInfo instances are collected
+        try {
+            // used to do the HTTP request to worldweatheronline service
+            URL url = new URL(path);
 
-        // TO COMPLETE!
+            // the stream used to get the response to the service request
+            InputStream respStream = url.openStream();
+
+            // TO COMPLETE!
+        }
+        catch(IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return result;
     }
 
@@ -101,9 +111,34 @@ public class WeatherWebApi {
     public Iterable<Location> search(String location) {
 
         String path =  WEATHER_SERVICE + String.format(WEATHER_SEARCH_TEMPLATE, location, API_KEY);
+        List<Location> result = new ArrayList<>(); // where the WeatherInfo instances are collected
 
-        // TO COMPLETE!
-        return null;
+        try {
+            // used to do the HTTP request to worldweatheronline service
+            URL url = new URL(path);
+
+            // the stream used to get the response to the service request
+            InputStream respStream = url.openStream();
+
+            String line;
+
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(respStream));
+
+            while((line= reader.readLine()) != null &&
+                    line.startsWith("#"));
+
+            while(line != null) {
+                result.add(Location.valueOf(line));
+                line= reader.readLine();
+            }
+
+        }
+        catch(IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        return result;
     }
 
 }

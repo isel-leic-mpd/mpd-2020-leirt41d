@@ -5,18 +5,7 @@ import java.util.Iterator;
 
 public class SimpleProduct extends Product  {
 
-    private class EmptyIterator implements Iterator<Product> {
 
-        @Override
-        public boolean hasNext() {
-            return false;
-        }
-
-        @Override
-        public Product next() {
-            return null;
-        }
-    }
 
     private double price;
     public SimpleProduct(String name,
@@ -46,8 +35,8 @@ public class SimpleProduct extends Product  {
      */
     @Override
     public String getDescription( String prefix ){
-        // A COMPLETAR!
-        return null;
+        return String.format("%s, %.0f€",
+                super.getDescription(prefix),getPrice());
     }
 
 

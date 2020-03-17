@@ -11,8 +11,24 @@ import static travel.agencies.utils.ListUtils.sum;
 public class Program extends Product  {
     private List<Product> products;
 
+    private static LocalDate getFirstDate(Product[] products) {
+        return smaller(Arrays.asList(products),
+                (p1,p2) -> p1.getStartDate().compareTo(p2.getStartDate())).startDate;
+    }
+
+    private static LocalDate getLastDate(Product[] products) {
+        return larger(Arrays.asList(products),
+                (p1,p2) -> p1.getEndDate().compareTo(p2.getEndDate())).endDate;
+    }
+
     public Program(String name, Product ... products) {
-       // A COMPLETAR
+        super(name, getFirstDate(products), getLastDate(products));
+        this.products  = Arrays.asList(products);
+    }
+
+    @Override
+    public double getPrice() {
+        return sum(products, p -> p.getPrice());
     }
 
     /**
@@ -47,15 +63,22 @@ public class Program extends Product  {
      * @return
      */
     @Override
-    public String getDescription( String prefix ){
-        // A COMPLETAR!
-        return null;
+    public String getDescription( String prefix ) {
+        StringBuilder sb =
+                new StringBuilder(super.getDescription(prefix));
+        //sb.append(System.lineSeparator());
+        sb.append('\n');
+        for(Product p : products) {
+            sb.append(p.getDescription(prefix + "  "));
+            sb.append('\n');
+        }
+        sb.append(String.format("%sTOTAL: %.0f€", prefix, getPrice()));
+        return sb.toString();
     }
 
-    // A COMPLETAR!
 
-
-
-
-
+    @Override
+    public Iterator<Product> iterator() {
+        return products.iterator();
+    }
 }

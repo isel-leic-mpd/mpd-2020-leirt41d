@@ -39,12 +39,13 @@ public class ListUtils {
     public static <T>
     T larger(Iterable<T> elems, Comparator<T> cmp) {
 
-        // A COMPLETAR
-        return null;
+        return smaller(elems, cmp.reversed());
     }
 
     public static <T> int  sum(Iterable<T> elems, ToDoubleFunction<T> val) {
-       // A COMPLETAR
-        return 0;
+        int s = 0;
+
+        for(T elem : elems) s += val.applyAsDouble(elem);
+        return s;
     }
 }

@@ -4,6 +4,7 @@
 package travel.agencies;
 
 import org.junit.Test;
+import travel.agencies.products.DiscountProduct;
 import travel.agencies.products.Product;
 import travel.agencies.products.Program;
 import travel.agencies.products.SimpleProduct;
@@ -27,19 +28,19 @@ public class LibraryTest {
     static SortedSet<Product> productDb;
 
     static {
-        SimpleProduct vAcores =
+        SimpleProduct acores =
                 new SimpleProduct(
-                        "Açores",
+                        "Acores",
                         of(2012,3,1),
                         of(2012,3,14), 700);
 
-        SimpleProduct vMadeira =
+        SimpleProduct madeira =
                 new SimpleProduct(
                         "Madeira",
                         of(2012,3,15),
                         of(2012,3,22), 525);
         Product packIslands =
-                new Program("Descubra Açores e Madeira", vAcores, vMadeira);
+                new Program("Descubra Acores e Madeira", acores, madeira);
         Product vLisbon =
                 new SimpleProduct( "Lisboa",
                         LocalDate.of(2012,3,23),
@@ -48,13 +49,16 @@ public class LibraryTest {
         Product packPortugal =
                 new Program("Portugal e ilhas",packIslands,vLisbon);
 
+        Product promoAcores = new DiscountProduct(acores, 30);
+
+
         productDb = new TreeSet<>();
-        productDb.add(vAcores);
-        productDb.add(vMadeira);
+        productDb.add(acores);
+        productDb.add(madeira);
         productDb.add(packIslands);
         productDb.add(vLisbon);
         productDb.add(packPortugal);
-
+        productDb.add(promoAcores);
     }
 
     public Product getByName(String name) {
@@ -67,12 +71,12 @@ public class LibraryTest {
 
     @Test
     public void testProgramPrice() {
-        Product vAcores = getByName("Açores");
+        Product vAcores = getByName("Acores");
 
         Product vMadeira = getByName("Madeira");
 
 
-        Product pack1 = getByName("Descubra Açores e Madeira");
+        Product pack1 = getByName("Descubra Acores e Madeira");
 
         double expectedPrice = vMadeira.getPrice()+vAcores.getPrice();
         assertEquals(pack1.getPrice(),expectedPrice, 0.01 );
@@ -84,11 +88,11 @@ public class LibraryTest {
     public void testProgramDescription() {
         String expectedDescription =
                 "de 2012-03-01 a 2012-03-30, Portugal e ilhas\n" +
-                "  de 2012-03-01 a 2012-03-22, Descubra Açores e Madeira\n" +
-                "    de 2012-03-01 a 2012-03-14, Açores\n" +
-                "    de 2012-03-15 a 2012-03-22, Madeira\n" +
+                "  de 2012-03-01 a 2012-03-22, Descubra Acores e Madeira\n" +
+                "    de 2012-03-01 a 2012-03-14, Acores, 700€\n" +
+                "    de 2012-03-15 a 2012-03-22, Madeira, 525€\n" +
                 "  TOTAL: 1225€\n" +
-                "  de 2012-03-23 a 2012-03-30, Lisboa\n" +
+                "  de 2012-03-23 a 2012-03-30, Lisboa, 600€\n" +
                 "TOTAL: 1825€";
 
         Product packPortugal = getByName("Portugal e ilhas");
@@ -99,12 +103,20 @@ public class LibraryTest {
 
     }
 
+
     @Test
     public void countSimpleProductsInProductsDb() {
-        int expectedSimpleCount = 8;
+        int expectedSimpleCount = 9;
 
         int actualCount = Product.totalSimpleProducts(productDb);
         assertEquals(expectedSimpleCount, actualCount);
-
     }
+
+
+    @Test
+    public void discountedAcoresTest() {
+        Product promoAcores = getByName("Promo Acores");
+        System.out.println(promoAcores);
+    }
+
 }

@@ -5,8 +5,7 @@ import java.util.Iterator;
 
 
 public abstract class Product implements
-        Comparable<Product>,
-        Iterable<Product> {
+        Comparable<Product> {
     private String name;
     protected LocalDate startDate, endDate;
 
@@ -32,14 +31,11 @@ public abstract class Product implements
         for(Product p : products) {
            if (p instanceof SimpleProduct) count++;
            else {
-                /*
+
                 if (p instanceof Program) {
                     Program prog = (Program) p;
                     count +=  totalSimpleProducts(prog);
                 }
-               */
-                count += totalSimpleProducts(p);
-
            }
         }
         return count;
@@ -75,6 +71,4 @@ public abstract class Product implements
         return name.compareTo(p.getName());
     }
 
-    @Override
-    public Iterator<Product> iterator() { return emptyIterator; };
 }

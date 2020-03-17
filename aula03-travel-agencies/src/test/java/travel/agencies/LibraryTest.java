@@ -106,7 +106,7 @@ public class LibraryTest {
 
     @Test
     public void countSimpleProductsInProductsDb() {
-        int expectedSimpleCount = 9;
+        int expectedSimpleCount = 8;
 
         int actualCount = Product.totalSimpleProducts(productDb);
         assertEquals(expectedSimpleCount, actualCount);

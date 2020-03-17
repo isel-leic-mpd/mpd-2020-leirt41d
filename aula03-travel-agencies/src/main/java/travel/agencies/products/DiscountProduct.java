@@ -7,19 +7,15 @@ public class DiscountProduct extends Product {
     int discount;
 
     private class PromoIterator implements Iterator<Product> {
-        boolean first = true;
 
         @Override
         public boolean hasNext() {
-            return first;
+            return false;
         }
 
         @Override
         public Product next() {
-            if (!hasNext())
-                throw new IllegalStateException();
-            first = false;
-            return promoProduct;
+           return null;
         }
     }
 
@@ -36,12 +32,9 @@ public class DiscountProduct extends Product {
 
     @Override
     public String getDescription( String prefix ){
-        return String.format("%s(desconto de %d%%), %.0f",
+        return String.format("%s(desconto de %d%%), %.0f€",
                 super.getDescription(prefix), discount, getPrice());
     }
 
-    @Override
-    public Iterator<Product> iterator() {
-        return new PromoIterator();
-    }
+
 }

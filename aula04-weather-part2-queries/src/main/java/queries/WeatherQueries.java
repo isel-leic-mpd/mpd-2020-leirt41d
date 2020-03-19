@@ -76,18 +76,6 @@ public class WeatherQueries {
         return result;
     }
 
-    /// the generic version of filter
-    // now we can filter a sequence of any type!
-    public static <T> Iterable<T> filter(
-            Iterable<T> src,
-            Filter<T> f) {
-        List<T> result = new ArrayList<>();
-        for(T wi : src) {
-            if (f.test(wi))
-                result.add(wi);
-        }
-        return result;
-    }
 
     // Another intermediary operation that allow to tarnsform
     // a sequence of WeatherInfo into a sequence of Doubles

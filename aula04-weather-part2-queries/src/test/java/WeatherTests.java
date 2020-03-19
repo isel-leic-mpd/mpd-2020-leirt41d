@@ -11,6 +11,9 @@ import static queries.WeatherQueries.filter;
 import static queries.WeatherQueries.map;
 import static queries.WeatherQueries.sum;
 
+import static queries.generic.Queries.filter;
+import static queries.generic.Queries.reduce;
+
 import static java.time.LocalDate.of;
 
 
@@ -35,7 +38,7 @@ public class WeatherTests {
 
 
         Iterable<WeatherInfo> sunnyDays =
-                WeatherQueries.filter(
+                filter(
                         past, (WeatherInfo wi) -> wi.getDescription().contains("Sunny"));
 
         int res=0;
@@ -72,7 +75,7 @@ public class WeatherTests {
     }
 
     @Test
-    public void sumPrecipitationOfDaysWithMaxTempLessThan10Test() {
+    public void sumPrecipitationOfDaysWithMaxTempLessThan15Test() {
 
         final double expectedCount = 1.5;
 
@@ -108,17 +111,20 @@ public class WeatherTests {
                     )
                 );
 
-        // this has exactly the same effect of the above code
+
+        // the next code has exactly the same effect of the above code
         // but is more verbose
+
+        // intermediate operations
         Iterable<WeatherInfo> coldDays =
                filter(past, (WeatherInfo wi) -> wi.getTempC() < 15);
         Iterable<Double> rainValues =
                 map(coldDays, wi -> wi.getPrecipMM());
-        double rainSum2 =
-                sum(rainValues);
+        // terminal operation
+        double rainSum2 = sum(rainValues);
 
         /*
-        // This is the form we want for the query. At this time
+        // The next is the form that we want for the query. At this time
         // it is no possible, but with some changes it will be!
 
         double rainSum3 =
@@ -128,10 +134,13 @@ public class WeatherTests {
         */
         System.out.println("rain total = " + rainSum2 + "mm");
 
-
         Assert.assertEquals(expectedCount, rainSum2, 0.01 );
     }
 
+    @Test
+    public void sumPrecipitationOfDaysWithMaxTempLessThan15WithReduceTest() {
+        // A COMPLETAR
+    }
 
 
     @Test

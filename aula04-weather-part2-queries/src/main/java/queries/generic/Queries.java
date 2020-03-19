@@ -21,12 +21,5 @@ public class Queries {
         return result;
     }
 
-    public static <T,R> R reduce(Iterable<T> src, R initial,
-                                 BiFunction<R,T,R> accum) {
-        R result = initial;
-        for(T t : src) {
-            result = accum.apply(result, t);
-        }
-        return result;
-    }
+  
 }

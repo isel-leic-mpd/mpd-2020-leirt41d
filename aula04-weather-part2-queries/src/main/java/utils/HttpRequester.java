@@ -2,12 +2,11 @@ package utils;
 
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-public class HttpRequest extends AbstractRequest {
+public class HttpRequester extends AbstractRequester {
     /**
-     * The implementation in HttpRequesr just does an HttpRequest and return the response stream
+     * The implementation in HttpRequester just does an
+     * http request and return the response stream
      * @param path
      * @return
      * @throws IOException
@@ -17,4 +16,6 @@ public class HttpRequest extends AbstractRequest {
          return new URL(path).openStream();
 
     }
+
+
 }

@@ -1,7 +1,7 @@
 import dto.DayInfo;
 import dto.Location;
 import dto.WeatherInfo;
-import utils.IRequest;
+import utils.Requester;
 
 import java.io.*;
 import java.net.URL;
@@ -37,7 +37,7 @@ public class WeatherWebApi {
     }
 
     // the object to request response input stream
-    private IRequest req;
+    private Requester req;
 
     /**
      * the IRequest object received in constructor abstracts WeatherWebApi
@@ -46,7 +46,7 @@ public class WeatherWebApi {
      * way to get the data is "injected via constructor"
      * @param req
      */
-    public WeatherWebApi( IRequest req) {
+    public WeatherWebApi( Requester req) {
         this.req = req;
     }
 

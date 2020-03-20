@@ -3,16 +3,15 @@ import dto.Location;
 import dto.WeatherInfo;
 import org.junit.Assert;
 import org.junit.Test;
-import queries.WeatherQueries;
-import utils.FileRequest;
-import utils.HttpRequest;
+import utils.FileRequester;
+import utils.HttpRequester;
 
 import static queries.WeatherQueries.filter;
 import static queries.WeatherQueries.map;
 import static queries.WeatherQueries.sum;
 
 import static queries.generic.Queries.filter;
-import static queries.generic.Queries.reduce;
+//import static queries.generic.Queries.reduce;
 
 import static java.time.LocalDate.of;
 
@@ -22,10 +21,10 @@ public class WeatherTests {
 
 
     @Test
-    public void filterWeatherInfoTest() {
+    public void filterWeatherInfoFebSunnyDaysCountTest() {
 
         final int expectedCount = 0;
-        WeatherWebApi weather = new WeatherWebApi(new HttpRequest());
+        WeatherWebApi weather = new WeatherWebApi(new HttpRequester());
 
         Iterable<WeatherInfo> past =
                 weather.pastWeather(lisbonLat, lisbonLong,
@@ -48,11 +47,11 @@ public class WeatherTests {
     }
 
     @Test
-    public void filterDayInfoTest() {
+    public void filterDayInfoBrightMoonTest() {
 
         final int expectedCount = 14;
 
-        WeatherWebApi weather = new WeatherWebApi(new HttpRequest());
+        WeatherWebApi weather = new WeatherWebApi(new HttpRequester());
 
         Iterable<DayInfo> past =
                 weather.pastDays(lisbonLat, lisbonLong,
@@ -79,7 +78,7 @@ public class WeatherTests {
 
         final double expectedCount = 1.5;
 
-        WeatherWebApi weather = new WeatherWebApi(new HttpRequest());
+        WeatherWebApi weather = new WeatherWebApi(new HttpRequester());
 
         Iterable<WeatherInfo> past =
                 weather.pastWeather(lisbonLat, lisbonLong,
@@ -148,7 +147,7 @@ public class WeatherTests {
 
         final int expectedCount = 57;
 
-        WeatherWebApi weather = new WeatherWebApi(new FileRequest());
+        WeatherWebApi weather = new WeatherWebApi(new FileRequester());
 
         Iterable<WeatherInfo> past =
                 weather.pastWeather(lisbonLat, lisbonLong,
@@ -173,7 +172,7 @@ public class WeatherTests {
 
         final int expectedCount = 57;
 
-        WeatherWebApi weather = new WeatherWebApi(new FileRequest());
+        WeatherWebApi weather = new WeatherWebApi(new FileRequester());
 
         Iterable<DayInfo> past =
                 weather.pastDays(lisbonLat, lisbonLong,
@@ -193,7 +192,7 @@ public class WeatherTests {
 
         final int expectedCount = 2;
 
-        WeatherWebApi weather = new WeatherWebApi( new FileRequest());
+        WeatherWebApi weather = new WeatherWebApi( new FileRequester());
         Iterable<Location> locations = weather.search("Lisbon");
         int count=0;
         for(Location loc : locations) {

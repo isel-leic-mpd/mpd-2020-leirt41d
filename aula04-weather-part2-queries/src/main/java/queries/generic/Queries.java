@@ -8,8 +8,8 @@ import java.util.function.BiFunction;
 
 public class Queries {
 
-    /// the generic version of filter
-    // now we can filter a sequence of any type!
+    /// the generic version of filter.
+    // Now we can filter a sequence of any type!
     public static <T> Iterable<T> filter(
             Iterable<T> src,
             Filter<T> f) {
@@ -21,5 +21,5 @@ public class Queries {
         return result;
     }
 
-  
+
 }

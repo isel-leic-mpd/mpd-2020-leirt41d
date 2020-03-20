@@ -1,18 +1,14 @@
 package utils;
 
 import java.io.*;
-import java.lang.reflect.InvocationHandler;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-public class FileRequest  extends  AbstractRequest {
+public class FileRequester extends AbstractRequester {
 
     /**
-     * The implementation in FileRequest just transform the received patah to be conforming
-     * to a file name and get the file from the resources folder.
-     * Note the resources must be in the main folder sources or the test folder sources
-     * depending we are executing an application or running the tests
+     * The implementation in FileRequester just transform the received path
+     * to be conforming to a file name and get the file from the resources folder.
+     * Note that the resources must be in the main folder sources or the test folder
+     * sources depending if we are executing an application or running the tests.
      * @param path
      * @return
      * @throws IOException

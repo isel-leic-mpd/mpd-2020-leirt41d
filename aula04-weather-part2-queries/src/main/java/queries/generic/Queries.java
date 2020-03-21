@@ -1,10 +1,13 @@
 package queries.generic;
 
+import dto.WeatherInfo;
 import utils.Filter;
+import utils.WeatherInfoToDouble;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class Queries {
 
@@ -21,5 +24,14 @@ public class Queries {
         return result;
     }
 
+    public static <T, U> Iterable<U> map(
+            Iterable<T> src,
+            Function<T, U> mapper) {
+        List<U> result = new ArrayList<>();
+        for(T t : src) {
+            result.add(mapper.apply(t));
+        }
+        return result;
+    }
 
 }

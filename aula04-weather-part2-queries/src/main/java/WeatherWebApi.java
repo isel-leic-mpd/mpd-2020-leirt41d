@@ -46,7 +46,7 @@ public class WeatherWebApi {
      * way to get the data is "injected via constructor"
      * @param req
      */
-    public WeatherWebApi( Requester req) {
+    public WeatherWebApi(Requester req) {
         this.req = req;
     }
 

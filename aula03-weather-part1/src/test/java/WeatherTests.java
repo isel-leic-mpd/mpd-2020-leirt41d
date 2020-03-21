@@ -25,6 +25,7 @@ public class WeatherTests {
         Assert.assertEquals(expectedCount, count);
     }
 
+    /*
     @Test
     public void pastDaysAtLisbonFrom2020Jan1Till2020Jan26Test() {
         final int expectedCount = 26;
@@ -43,6 +44,7 @@ public class WeatherTests {
 
         Assert.assertEquals(expectedCount, count);
     }
+    */
 
     @Test
     public void retrieveLocationsNamedLisbonTest() {
@@ -58,5 +60,4 @@ public class WeatherTests {
 
         Assert.assertEquals(expectedCount, count);
     }
-
 }

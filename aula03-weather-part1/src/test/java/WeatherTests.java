@@ -47,7 +47,7 @@ public class WeatherTests {
     */
 
     @Test
-    public void retrieveLocationsNamedLisbonTest() {
+    public void retrieveLocationsNamedLisbonTestPart1() {
         final int expectedCount = 2;
 
         WeatherWebApi weather = new WeatherWebApi();

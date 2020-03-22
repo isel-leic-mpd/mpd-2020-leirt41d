@@ -7,8 +7,8 @@
  */
 
 plugins {
-    // Apply the java plugin to add support for Java
-    id 'java'
+    // Apply the java-library plugin to add support for Java Library
+    id 'java-library'
 }
 
 sourceCompatibility = 1.9

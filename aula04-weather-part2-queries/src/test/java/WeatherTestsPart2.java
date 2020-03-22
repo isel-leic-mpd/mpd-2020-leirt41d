@@ -17,7 +17,7 @@ import static queries.generic.Queries.map;
 import static java.time.LocalDate.of;
 
 
-public class WeatherTests {
+public class WeatherTestsPart2 {
     private  final double lisbonLat = 38.71667, lisbonLong = -9.13333;
 
 
@@ -188,11 +188,11 @@ public class WeatherTests {
         Assert.assertEquals(expectedCount, count);
     }
 
-    /*
-    @Test
-    public void retrieveLocationsNamedLisbonTest() {
 
-        final int expectedCount = 2;
+    @Test
+    public void  retrieveLocationsNamedLisbonTest() {
+
+        final  int expectedCount = 2;
 
         WeatherWebApi weather = new WeatherWebApi( new FileRequester());
         Iterable<Location> locations = weather.search("Lisbon");
@@ -205,6 +205,6 @@ public class WeatherTests {
         Assert.assertEquals(expectedCount, count);
     }
 
-     */
+
 
 }

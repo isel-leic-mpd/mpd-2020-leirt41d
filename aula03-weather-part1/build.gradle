@@ -7,11 +7,11 @@
  */
 
 plugins {
-    // Apply the java plugin to add support for Java
-    id 'java'
+    // Apply the java-library plugin to add support for Java Library
+    id 'java-library'
 }
 
-sourceCompatibility = 1.9
+sourceCompatibility = 1.8
 
 repositories {
     // Use jcenter for resolving dependencies.

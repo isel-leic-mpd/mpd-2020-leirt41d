@@ -1,0 +1,57 @@
+@startuml
+
+skinparam nodesep 20
+skinparam ranksep 40
+skinparam classAttributeIconSize 0
+hide empty members
+hide circle
+
+'$DayInfo
+class DayInfo{
+ +DayInfo(...)
+ +getDate():LocalDate
+ +getMaxTemp():int
+ +getMinTemp():int
+ +getSunrise():LocalTime
+ +getSunset():LocalTime
+ +getMoonrise():LocalTime
+ +getMoonset():LocalTime
+ +getMoonPhase():String
+ +getMoonIllumination():int
+ +getTemperatures();Iterable<WeatherInfo>
+ +toString():String
+}
+DayInfo o-- LocalDate : -date
+DayInfo o-- LocalTime : -sunrise
+DayInfo o-- LocalTime : -sunset
+DayInfo o-- LocalTime : -moonrise
+DayInfo o-- LocalTime : -moonset
+DayInfo o-  WeatherInfo  : -temps "   *"
+'\$
+
+'$Location
+class Location{
+    +String getName()
+    +String getCountry()
+    +double getLatitude()       }
+    +double getLongitude()
+    +Iterable<DayInfo> getDays(LocalDate from, LocalDate to)
+    +toString():String
+
+}
+Location o-- "*"  DayInfo : -days
+'\$
+
+
+'$WeatherInfo
+class WeatherInfo{
+ +WeatherInfo(...)
+ +getLocalTime():LocalTime
+ +getTempC():int
+ +getDescription():String
+ +getPrecipMM():double
+ +getFeelsLikeC():int
+ +toString():String
+}
+'\$
+@enduml

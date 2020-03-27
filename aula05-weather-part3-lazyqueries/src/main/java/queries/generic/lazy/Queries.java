@@ -1,5 +1,6 @@
 package queries.generic.lazy;
 
+import queries.generic.lazy.iterators.IteratorDropWhile;
 import queries.generic.lazy.iterators.IteratorFilter;
 import queries.generic.lazy.iterators.IteratorMap;
 import queries.generic.lazy.iterators.IteratorSkip;
@@ -14,11 +15,21 @@ public class Queries {
 
     // Creators ou Factories
 
-    public static <T> Iterable<T> iterate(
+    public static <T> Iterable<T> iterate (
             T seed,
             UnaryOperator<T> func) {
-        // To implement!
-        return null;
+        return () -> new Iterator<T>() {
+            T next = seed;
+            public boolean hasNext() {
+                return true;
+            }
+
+            public T next() {
+                T curr = next;
+                next = func.apply(next);
+                return curr;
+            }
+        };
     }
 
     @SafeVarargs
@@ -77,14 +88,36 @@ public class Queries {
         return null;
     }
 
-    public static <T> Iterable<T> limit(Iterable<T> src, long maxSize) {
-         // To implement
-        return null;
+
+
+
+    public static <T> Iterable<T> limit(Iterable<T> src, long maxSize) {// To implement
+        //return null;
+
+
+        return () -> new Iterator<T>() {
+            long n = 0;
+            Iterator<T> srcIter = src.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return (n < maxSize && srcIter.hasNext());
+            }
+
+            @Override
+            public T next() {
+                if (!hasNext())
+                    throw new NoSuchElementException();
+                n++;
+                return srcIter.next();
+            }
+        };
     }
 
-    public static <T> Iterable<T> dropWhile(Iterable<T> src, Predicate<T>  f) {
-        // TO Complete!
-        return null;
+
+
+    public static <T> Iterable<T> dropWhile(Iterable<T> src, Predicate<T> f) {
+        return () -> new IteratorDropWhile<>(src, f);
     }
 
     public static <T> Iterable<T> justEvens(Iterable<T> src) {

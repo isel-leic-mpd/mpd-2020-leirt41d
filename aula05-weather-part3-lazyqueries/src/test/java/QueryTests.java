@@ -33,4 +33,23 @@ public class QueryTests {
             doubleList.add(i);
         assertEquals(expectedSeq, doubleList);
     }
+
+    @Test
+    public void simpleIterateTest() {
+        /*
+        Iterable<Integer> oddNumbers =
+                iterate(1, v -> v +2);
+        Iterable<Integer> firstTenOddNumbers =
+                limit(oddNumbers, 10);
+        */
+
+        Iterable<Integer> firstTenOddNumbers =
+                limit(
+                        iterate(1, v -> v +2),
+                        10
+                );
+
+        firstTenOddNumbers
+                .forEach(v -> System.out.println(v));
+    }
 }

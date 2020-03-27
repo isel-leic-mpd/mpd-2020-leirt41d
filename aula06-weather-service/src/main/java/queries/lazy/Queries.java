@@ -10,7 +10,9 @@ import java.util.function.*;
 
 public class Queries {
 
+    @SafeVarargs
     public static <T> Iterable<T> from(T... vals) {
+
         return () -> new IteratorArray<>(vals);
     }
 
@@ -44,6 +46,7 @@ public class Queries {
         return () -> it;
     }
 
+
     public static <T>  Iterable<T> justOdds(Iterable<T> src) {
 
         return () -> new IteratorJustOdds<T>( src);
@@ -76,9 +79,10 @@ public class Queries {
         return null;
     }
 
-    public static <T> T[] toArray(Iterable<T> src) {
+
+    public static <T> Object[] toArray(Iterable<T> src) {
          List<T> res = new ArrayList<>();
          forEach(src, v-> res.add(v));
-         return (T[]) res.toArray();
+         return res.toArray();
     }
 }

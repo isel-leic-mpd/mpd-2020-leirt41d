@@ -28,7 +28,6 @@ public class WeatherWebApi {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(keyFile.openStream()))) {
                 return reader.readLine();
             }
-
         }
         catch(IOException e) {
             throw new IllegalStateException(

@@ -53,7 +53,6 @@ public class DayInfo {
     public int getMoon_illumination() { return moon_illumination; }
 
     public Iterable<WeatherInfo> getTemperatures() {
-
         return temperatures.get();
     }
 

@@ -31,7 +31,6 @@ public class QueryTests {
 
         for( Integer i : doubleSeq)
             doubleList.add(i);
-        assertArrayEquals(expectedSeq.toArray(), doubleList.toArray());
-
+        assertEquals(expectedSeq, doubleList);
     }
 }

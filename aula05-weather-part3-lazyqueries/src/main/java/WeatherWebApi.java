@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import static queries.generic.lazy.Queries.*;
 
 public class WeatherWebApi {
     private static final String API_KEY;
@@ -123,6 +123,7 @@ public class WeatherWebApi {
             }
         }
         return result;
+
     }
 
     /**

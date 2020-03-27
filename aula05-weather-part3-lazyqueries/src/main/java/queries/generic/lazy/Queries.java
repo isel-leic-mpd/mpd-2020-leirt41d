@@ -3,21 +3,27 @@ package queries.generic.lazy;
 import queries.generic.lazy.iterators.IteratorFilter;
 import queries.generic.lazy.iterators.IteratorMap;
 import queries.generic.lazy.iterators.IteratorSkip;
-import utils.Filter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 public class Queries {
-    // Creators
+
+    // Creators ou Factories
+
+    public static <T> Iterable<T> iterate(
+            T seed,
+            UnaryOperator<T> func) {
+        // To implement!
+        return null;
+    }
 
     @SafeVarargs
     public static  <T> Iterable<T> of( T... params) {
+        // Modify to a lazy implementation
         return Arrays.asList(params);
     }
 
@@ -26,7 +32,6 @@ public class Queries {
 
         @Override
         public boolean hasNext() {
-
             return true;
         }
 
@@ -67,8 +72,28 @@ public class Queries {
         return () -> iter;
     }
 
-    public static <T> Iterable<T> takeWhile(Iterable<T> src, Filter<T>  f) {
+    public static <T> Iterable<T> takeWhile(Iterable<T> src, Predicate<T>  f) {
         // TO Complete!
+        return null;
+    }
+
+    public static <T> Iterable<T> limit(Iterable<T> src, long maxSize) {
+         // To implement
+        return null;
+    }
+
+    public static <T> Iterable<T> dropWhile(Iterable<T> src, Predicate<T>  f) {
+        // TO Complete!
+        return null;
+    }
+
+    public static <T> Iterable<T> justEvens(Iterable<T> src) {
+
+        return null;
+    }
+
+    public static <T> Iterable<T> justOdds(Iterable<T> src) {
+
         return null;
     }
 
@@ -87,7 +112,16 @@ public class Queries {
     public static <T,R> R reduce(
             Iterable<T> src, R initial,
             BiFunction<R,T,R> accum) {
-        // TO Complete!
-        return null;
+        R res = null;
+        // TO COMPLETE!
+        return res;
     }
+
+    public static <T> List<T> toList(Iterable<T> src)  {
+        List<T> result = new ArrayList<>();
+
+        // TO COMPLETE!
+        return result;
+    }
+
 }

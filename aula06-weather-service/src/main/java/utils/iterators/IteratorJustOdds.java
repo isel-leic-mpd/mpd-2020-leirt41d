@@ -29,7 +29,7 @@ public class IteratorJustOdds<T> implements Iterator<T> {
     public T next() {
         if (!hasNext())
             throw new NoSuchElementException();
-        T item = box.getItem();
+        T item = box.get();
         box = Box.empty();
         return item;
     }

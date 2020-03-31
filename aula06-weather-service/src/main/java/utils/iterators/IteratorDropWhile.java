@@ -4,7 +4,6 @@ import utils.Box;
 
 
 import java.util.Iterator;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class IteratorDropWhile<T> implements Iterator<T> {
@@ -42,7 +41,7 @@ public class IteratorDropWhile<T> implements Iterator<T> {
         if (!hasNext())
             throw new IllegalStateException();
         if (box.isPresent()) {
-            T item = box.getItem();
+            T item = box.get();
             box = Box.empty();
             return item;
         }

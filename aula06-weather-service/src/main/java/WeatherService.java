@@ -45,8 +45,8 @@ public class WeatherService {
                 dto.getCountry(),
                 dto.getLatitude(),
                 dto.getLongitude(),
-                //this::pastDays
-                (loc, d1, d2) -> pastDays(loc, d1, d2)
+                this::pastDays
+                //(loc, d1, d2) -> pastDays(loc, d1, d2)
                 );
     }
 

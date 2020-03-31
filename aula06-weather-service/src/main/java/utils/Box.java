@@ -6,12 +6,12 @@ public class Box<T> {
     private final boolean isPresent;
     private final T item;
 
-    public Box(T item) {
+    private Box(T item) {
         this.isPresent = true;
         this.item = item;
     }
 
-    public Box() {
+    private Box() {
         this.isPresent = false;
         this.item = null;
     }
@@ -27,7 +27,7 @@ public class Box<T> {
         return isPresent;
     }
 
-    public T getItem() {
+    public T get() {
         if (!isPresent()) throw new NoSuchElementException();
         return item;
     }

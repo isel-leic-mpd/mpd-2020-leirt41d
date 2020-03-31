@@ -9,7 +9,8 @@ public class Queries {
 
     @SafeVarargs
     public static  <T> Iterable<T> of( T... params) {
-       return Arrays.asList(params);
+
+        return Arrays.asList(params);
     }
 
     private static class OddsIterator implements Iterator<Integer> {

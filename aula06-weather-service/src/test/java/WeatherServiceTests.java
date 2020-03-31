@@ -1,5 +1,6 @@
 import model.DayInfo;
 import model.Location;
+import model.WeatherInfo;
 import org.junit.Test;
 import utils.FileRequest;
 import utils.HttpRequest;

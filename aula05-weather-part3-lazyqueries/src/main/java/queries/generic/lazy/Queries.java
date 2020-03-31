@@ -32,7 +32,8 @@ public class Queries {
         };
     }
 
-    @SafeVarargs
+    //@SafeVarargs
+    @SuppressWarnings("unchecked")
     public static  <T> Iterable<T> of( T... params) {
         // Modify to a lazy implementation
         return Arrays.asList(params);
@@ -137,9 +138,10 @@ public class Queries {
         return 0;
     }
 
-    public static <T> T first(Iterable<T> src) {
-        // TO Complete!
-        return null;
+    public static <T> Optional<T> first(Iterable<T> src) {
+        Iterator<T> iter = src.iterator();
+        if (!iter.hasNext()) return Optional.empty();
+        return Optional.of(iter.next())
     }
 
     public static <T,R> R reduce(

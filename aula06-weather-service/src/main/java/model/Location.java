@@ -35,6 +35,7 @@ TriFunction<Location,LocalDate, LocalDate, Iterable<DayInfo>> pastDays) {
 
 
     public Iterable<DayInfo> getDays(LocalDate from, LocalDate to)  {
+
         return pastDays.apply(this, from,to);
     }
 

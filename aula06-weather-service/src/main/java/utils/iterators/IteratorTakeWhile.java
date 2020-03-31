@@ -4,7 +4,6 @@ import utils.Box;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class IteratorTakeWhile<T> implements Iterator<T> {
@@ -35,7 +34,7 @@ public class IteratorTakeWhile<T> implements Iterator<T> {
     public T next() {
         if (!hasNext())
             throw new NoSuchElementException();
-        T t = box.getItem();
+        T t = box.get();
         box = Box.empty();
         return t;
     }

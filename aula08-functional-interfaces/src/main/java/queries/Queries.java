@@ -1,6 +1,6 @@
-package queries.lazy;
+package queries;
 
-import utils.iterators.*;
+import queries.iterators.*;
 
 import java.util.*;
 import java.util.function.*;

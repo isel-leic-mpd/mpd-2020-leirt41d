@@ -141,7 +141,7 @@ public class Queries {
     public static <T> Optional<T> first(Iterable<T> src) {
         Iterator<T> iter = src.iterator();
         if (!iter.hasNext()) return Optional.empty();
-        return Optional.of(iter.next())
+        return Optional.of(iter.next());
     }
 
     public static <T,R> R reduce(

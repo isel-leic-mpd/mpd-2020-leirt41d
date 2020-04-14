@@ -15,4 +15,7 @@ include 'aula04-weather-part2-queries'
 include 'aula03-weather-part1'
 include 'aula05-weather-part3-lazyqueries'
 include 'aula06-weather-service'
+include 'aula08-functional-interfaces'
+
+
 

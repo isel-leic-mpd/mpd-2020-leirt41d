@@ -12,7 +12,7 @@ public interface Sequence<T> {
 
     /**
      * Functional version of iteration interface
-     * tryAdvance receives the consumer witch is called
+     * tryAdvance receives the consumer which is called
      * with the next element of the sequence, if one exists
      * @param action - consumer
      * @return true if the consumer was called with the next element
@@ -80,10 +80,10 @@ public interface Sequence<T> {
 
     // operações terminais
 
-    // In order to avois the java limited
-    // that the captured variables must be final
-    // the state captured coud be wrapped in an object
-    // but generally an arary or list can be used has illustrated
+    // In order to avoid the java limitation
+    // that the captured variables must be final,
+    // the state captured could be wrapped in an object,
+    // but generally an array or list can be used has illustrated
     // in the "first" operation
     static class Wrapper<T> {
         public T val;

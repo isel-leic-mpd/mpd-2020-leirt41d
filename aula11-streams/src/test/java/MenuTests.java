@@ -20,10 +20,10 @@ public class MenuTests {
                new Dish("pork", 800, Dish.Type.MEAT, 10),
                new Dish("beef",  700, Dish.Type.MEAT, 12),
                new Dish("chicken",  400, Dish.Type.MEAT, 8),
-               new Dish("mousse", 530, Dish.Type.DESERT, 3),
-               new Dish("rice",  350, Dish.Type.VEGETAL, 2),
-               new Dish("season fruit", 120, Dish.Type.DESERT, 3),
-               new Dish("cake",  550, Dish.Type.DESERT, 10),
+               new Dish("potatoes", 300, Dish.Type.VEGETAL, 3),
+               new Dish("rice",  250, Dish.Type.VEGETAL, 2),
+               new Dish("season fruit", 200, Dish.Type.DESERT, 3),
+               new Dish("cake",  550, Dish.Type.DESERT, 5),
                new Dish("prawns",  300, Dish.Type.FISH, 15),
                new Dish("salmon",  450, Dish.Type.FISH, 12)
            );
@@ -77,13 +77,5 @@ public class MenuTests {
 
     }
 
-    @Test
-    public void leastCaloriesFishAndMeatMealTest() {
-        Optional<Meal> m =
-                MealUtils.LeastCaloricVegetalAndFishMeal(menu);
-        System.out.println(m);
-    }
-
-
-
+ 
 }

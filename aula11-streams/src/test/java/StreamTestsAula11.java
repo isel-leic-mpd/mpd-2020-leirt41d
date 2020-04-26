@@ -32,9 +32,6 @@ public class StreamTestsAula11 {
     }
 
 
-
-
-
     @Test
     public void showFileNumbersTest() {
         String currentDir = System.getProperty("user.dir");

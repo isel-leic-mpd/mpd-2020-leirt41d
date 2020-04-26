@@ -17,6 +17,8 @@ include 'aula05-weather-part3-lazyqueries'
 include 'aula06-weather-service'
 include 'aula08-09-functional-interfaces'
 include 'aula10-weather-streams'
+include 'aula11-streams'
+
 
 
 

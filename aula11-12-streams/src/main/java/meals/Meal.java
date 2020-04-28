@@ -44,7 +44,7 @@ public class Meal {
 
     public Dish dish1() { return dish1; }
 
-    public Dish dish2() { return dish1; }
+    public Dish dish2() { return dish2; }
 
     public Optional<Dish> dish3() { return dish3; }
 }

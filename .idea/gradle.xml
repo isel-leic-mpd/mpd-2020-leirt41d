@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../../gradle/gradle-5.1.1" />
+        <option name="gradleJvm" value="11" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/aula02-travel-agencies" />
+            <option value="$PROJECT_DIR$/aula03-travel-agencies" />
+            <option value="$PROJECT_DIR$/aula03-weather-part1" />
+            <option value="$PROJECT_DIR$/aula04-weather-part2-queries" />
+            <option value="$PROJECT_DIR$/aula05-weather-part3-lazyqueries" />
+            <option value="$PROJECT_DIR$/aula06-weather-service" />
+            <option value="$PROJECT_DIR$/aula08-09-functional-interfaces" />
+            <option value="$PROJECT_DIR$/aula10-weather-streams" />
+            <option value="$PROJECT_DIR$/aula11-12-streams" />
+          </set>
+        </option>
+        <option name="useQualifiedModuleNames" value="true" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

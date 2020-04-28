@@ -9,7 +9,6 @@ public class Pair<T1,T2> {
     }
 
     public String toString() {
-
         return String.format("(%s,%s)", first, sec);
     }
 }

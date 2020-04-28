@@ -38,8 +38,11 @@ public class StreamTestsAula11 {
         String fileName =
                 currentDir + "/src/main/java/utils/StreamUtils.java";
 
-        Stream<String> numberedLines = null; // TO DO
-
+        Stream<String> numberedLines = zip(
+                    Stream.iterate(1, i-> i +1),
+                    lines(fileName),
+                    (i, l) -> i + ":\t" + l
+            );
 
         numberedLines.forEach(l -> System.out.println(l));
     }
@@ -58,6 +61,7 @@ public class StreamTestsAula11 {
        combs.forEach(System.out::println);
     }
 
+
     @Test
     public void generateCouplesTest() {
         Stream<String> femaleNames =
@@ -69,9 +73,10 @@ public class StreamTestsAula11 {
         Stream<Pair<String,String>> couples =
                 femaleNames
                 .flatMap(n1 ->
-                        maleNames.stream()
-                        .map(n2 -> new Pair<>(n1,n2))
+                    maleNames.stream()
+                   .map(n2 -> new Pair<>(n1, n2))
                 );
+
 
         couples.forEach(System.out::println);
     }
@@ -88,7 +93,7 @@ public class StreamTestsAula11 {
     }
 
 
-    /*
+
     @Test
     public void cacheRandomSeqTest() {
         Random r = new Random();
@@ -130,6 +135,6 @@ public class StreamTestsAula11 {
         assertEquals(random1, random2);
     }
 
-    */
+
 
 }

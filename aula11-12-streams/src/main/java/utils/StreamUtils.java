@@ -40,4 +40,9 @@ public class StreamUtils {
         // a completar
         return null;
     }
+
+    public static <T> Supplier<Stream<T>>
+        cache( Stream<T> src) {
+        return null;
+    };
 }

@@ -2,6 +2,8 @@ package utils;
 
 import utils.spliterators.SpliteratorInputStream;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -27,9 +29,14 @@ public abstract class AbstractRequest implements Request {
     */
 
 
-
+    /**
+     * A new version retrieving a lazy sequence
+     * @param path
+     * @return
+     */
     @Override
     public Stream<String> getContent(String path) {
+
         return
         StreamSupport.stream(
             new SpliteratorInputStream(()->getStream(path)), false);

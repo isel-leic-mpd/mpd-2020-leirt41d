@@ -11,7 +11,7 @@ plugins {
     id 'java-library'
 }
 
-sourceCompatibility = 1.10
+sourceCompatibility = 1.11
 
 repositories {
     // Use jcenter for resolving dependencies.
@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    project(':aula06-weather-service')
+   
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }

@@ -20,7 +20,7 @@ public class FileUtils {
      */
     public static void copyFileAsync(
             String fileIn, String fileOut,
-            BiConsumer<Throwable, Long> completed) throws IOException{
+            BiConsumer<Throwable, Long> completed) {
 
         long[] nBytes  = {0};
 

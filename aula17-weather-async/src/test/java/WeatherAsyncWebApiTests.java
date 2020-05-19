@@ -33,6 +33,8 @@ public class WeatherAsyncWebApiTests {
                         of(2019, 2, 26),
                         24);
 
+        assertEquals(1, req.getCount());
+
         long countWeather = past.join().count();
         assertEquals(1, req.getCount());
         assertEquals(expectedCount, countWeather );

@@ -10,7 +10,7 @@ public class FileRequest  implements AsyncRequest {
 
 
     @Override
-    public Stream<String> getContent(String path) {
+    public CompletableFuture<Stream<String>> getContent(String path) {
         try {
             path = path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('&'))
                     .replace('&', '-')
@@ -19,7 +19,9 @@ public class FileRequest  implements AsyncRequest {
                     .replace(',', '-') + ".txt";
 
 
-            return ClassLoader.getSystemResource(path).openStream();
+            return
+            CompletableFuture.completedFuture(
+                    AsyncRequest.getLines(ClassLoader.getSystemResource(path).openStream()));
         }
         catch(IOException e) {
             throw new UncheckedIOException(e);

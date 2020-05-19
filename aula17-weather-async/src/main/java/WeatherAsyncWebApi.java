@@ -44,6 +44,23 @@ public class WeatherAsyncWebApi {
     }
 
 
+    public CompletableFuture<Stream<WeatherInfoDto>>
+    pastWeather(double latitude, double longitude, LocalDate from, LocalDate to, int period) {
+        String query = latitude + "," + longitude;
+        String path =  WEATHER_SERVICE + String.format(WEATHER_PAST_TEMPLATE, query, from, to, period,API_KEY);
+
+        CompletableFuture<Stream<String>> futLines = req.getContent(path);
+
+        return futLines
+                .thenApply(stream ->
+                    stream
+                    .dropWhile( s -> s.startsWith("#"))
+                    .skip(1)
+                    .filter(s-> s.contains("worldweatheronline"))
+                    .map(WeatherInfoDto::valueOf)
+                );
+
+    }
 
     public CompletableFuture<Stream<DayInfoDto>>
     pastDays(double latitude, double longitude, LocalDate from, LocalDate to) {

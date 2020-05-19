@@ -119,21 +119,32 @@ public class AsyncIoTests {
 
        // to complete
 
-        /*
+        long start = System.currentTimeMillis();
+
         // versão com encadeamento em série
         CompletableFuture<Long> futAllSerial =
                 file1.readLines()
                 .thenCompose(stream1 ->
                         file2.readLines()
-                        .thenApply( stream2 -> stream1.count() + stream2.count()));
-        */
+                        .thenApply( stream2 -> stream1.count() + stream2.count())
+                )
+                .whenComplete((l, exc) -> { file1.close(); file2.close(); });
+        assertEquals(expectedLines, futAllSerial.join().intValue());
+        System.out.println( "done in "
+                + (System.currentTimeMillis()-start) + " ms!");
 
         // versão executando em paralelo a geração das duas Stream<String>
+        AsyncFile file1a = AsyncFile.open(UTHREAD_FILE);
+        AsyncFile file2a = AsyncFile.open(UTHREAD_FILE);
+
+        start = System.currentTimeMillis();
         CompletableFuture<Long> futAllPar =
-                file1.readLines()
-                .thenCombine(file2.readLines(),
+                file1a.readLines()
+                .thenCombine(file2a.readLines(),
                         (stream1, stream2) -> stream1.count() + stream2.count())
-                .whenComplete((l, exc) -> { file1.close(); file2.close(); });
+                .whenComplete((l, exc) -> { file1a.close(); file2a.close(); });
+        System.out.println( "done in "
+                + (System.currentTimeMillis()-start) + " ms!");
 
 
         assertEquals(expectedLines, futAllPar.join().intValue());
@@ -143,13 +154,12 @@ public class AsyncIoTests {
     @Test
     public void ShowLinesOfTextFileTest() {
         AsyncFile file = AsyncFile.open(UTHREAD_FILE);
-        CompletableFuture<Stream<String>> lines =
-                file.readLines();
 
-        CompletableFuture<Void> result = lines.thenAccept(sl -> {
-            sl.forEach(System.out::println);
-            file.close();
-        });
+        CompletableFuture<Void> result =
+            file.readLines().thenAccept(sl -> {
+                sl.forEach(System.out::println);
+                file.close();
+            });
 
         result.join();
     }
@@ -163,6 +173,7 @@ public class AsyncIoTests {
         long start = System.currentTimeMillis();
 
         CompletableFuture<Long> fl1 = copyFileAsync(fin[0], fout[0]);
+        fl1.join();
 
         CompletableFuture<Long> fl2 = copyFileAsync(fin[1], fout[1]);
         CompletableFuture<Long> fres =

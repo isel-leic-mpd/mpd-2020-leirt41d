@@ -19,13 +19,17 @@ public class WeatherAsyncService {
 
     public CompletableFuture<Stream<Location>>
     search(String query) {
-        return null;
+        return api.search(query)
+                .thenApply(stream -> stream.map(this::dtoToLocation));
     }
 
 
     public CompletableFuture<Stream<WeatherInfo>> pastWeather(
             Location loc, LocalDate from, LocalDate to, int period) {
-       return null;
+       return api.pastWeather(loc.getLatitude(), loc.getLongitude(),
+               from, to, period)
+            .thenApply(stream ->
+                    stream.map(this::dtoToWeatherInfo));
     }
 
     public CompletableFuture<Stream<DayInfo>> pastDays(Location loc, LocalDate from, LocalDate to) {

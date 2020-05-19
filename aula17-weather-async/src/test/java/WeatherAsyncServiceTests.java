@@ -23,12 +23,41 @@ public class WeatherAsyncServiceTests {
     @Test
     public void retrieveLocationsNamedLisbonTest() {
 
-        final int expectedCount = 2;
+        final long expectedCount = 2;
 
         WeatherAsyncService weather = new WeatherAsyncService(
                 new WeatherAsyncWebApi(new HttpRequest()));
-        // to complete
+
+        long nLocs = weather
+                .search("Lisboa")
+                .thenApply(s -> s.collect(toList()))
+                .whenComplete((l, e) -> l.forEach(System.out::println))
+                .thenApply(l -> l.size())
+                .join();
+
+        assertEquals(expectedCount,  nLocs);
     }
+
+    @Test
+    public void maxThermicAmplitudeAtLisbonInMarch2019() {
+        LocalDate expectedDate = LocalDate.of(2019,3,15);
+
+        LocalDate first = LocalDate.of(2019,3,1);
+        LocalDate last = LocalDate.of(2019,3,31);
+
+        WeatherAsyncService weather =
+                new WeatherAsyncService(new WeatherAsyncWebApi(new HttpRequest()));
+
+        LocalDate maxAmplitudeDate = null;
+        // to complete
+        // try to build just one async pipeline and do only join to that
+        // pipeline
+
+
+        assertEquals(expectedDate, maxAmplitudeDate);
+
+    }
+
 
 
     @Test
@@ -39,6 +68,8 @@ public class WeatherAsyncServiceTests {
 
         String moonPhase = null;
         // to complete
+        // try to build just one async pipeline and do only join to that
+        // pipeline
 
         assertEquals(expectedPhase, moonPhase);
     }
@@ -51,40 +82,13 @@ public class WeatherAsyncServiceTests {
 
         CompletableFuture<Stream<WeatherInfo>> futTemps =  null;
         // to complete
-
+        // try to build just one async pipeline and do only join to that
+        // pipeline
 
         assertEquals(48, futTemps.join().count());
 
     }
 
 
-    @Test
-    public void maxThermicAmplitudeAtLisbonInMarch2019() {
-        LocalDate expectedDate = LocalDate.of(2019,3,15);
-
-        LocalDate first = LocalDate.of(2019,3,1);
-        LocalDate last = LocalDate.of(2019,3,31);
-
-        WeatherAsyncService weather =
-                new WeatherAsyncService(new WeatherAsyncWebApi(new HttpRequest()));
-
-        LocalDate maxAmplitude =
-                weather.search("Lisbon")
-                .thenApply(stream ->
-                        stream.filter( l -> l.getCountry()
-                                .equalsIgnoreCase("portugal"))
-                                .findFirst()
-                                .get())
-                .thenCompose(loc -> loc.getDays(first, last))
-                .thenApply(stream ->
-                    stream.max( (d1, d2) ->
-                         (d1.getMaxTemp() - d1.getMinTemp()) - (d2.getMaxTemp() - d2.getMinTemp()))
-                    .get()
-               )
-                .join().getDate();
-
-
-
-    }
 
 }

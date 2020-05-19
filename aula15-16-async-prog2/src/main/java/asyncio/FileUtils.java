@@ -71,7 +71,7 @@ public class FileUtils {
 
         CompletableFuture<Long> res = fIn.readBytes(buffer)
         .thenCompose( i -> {
-            if (i == 0) {
+            if (i < BUFSIZE) {
                 fIn.close();
                 fOut.close();
                 return CompletableFuture.completedFuture(total);

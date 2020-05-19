@@ -31,8 +31,10 @@ public class HttpRequest implements AsyncRequest {
 
         return  client.prepareGet(path)
                 .execute()
-                .toCompletableFuture();
-        // to complete
+                .toCompletableFuture()
+                .thenApply( r ->
+                        AsyncRequest.getLines(r.getResponseBodyAsStream()))
+                .whenComplete((s,e) -> ahcClose(client));
 
     }
 }

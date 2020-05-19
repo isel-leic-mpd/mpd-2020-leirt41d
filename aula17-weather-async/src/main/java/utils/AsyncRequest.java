@@ -7,7 +7,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 public interface AsyncRequest {
-    CompletableFuture<Stream<String>> getContent(String path);
+    CompletableFuture<Stream<String>>
+    getContent(String path);
 
     static  Stream<String> getLines(InputStream input) {
         BufferedReader reader =

@@ -5,6 +5,10 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
 
+/**
+ * Yet another BAD implementation of collapse operation
+ * @param <T>
+ */
 public class SpliteratorCollapse3<T> extends Spliterators.AbstractSpliterator<T>{
 
     private Spliterator<T> src;

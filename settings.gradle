@@ -20,4 +20,6 @@ include 'aula10-weather-streams'
 include 'aula11-12-streams'
 include 'aula13-streams-revisoes'
 include 'aula14-async-prog'
+include 'aula15-16-async-prog2'
+include 'aula17-weather-async'
 

@@ -6,6 +6,10 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * A BAD implementation of collapse operation
+ * @param <T>
+ */
 public class SpliteratorCollapse1<T>
         extends Spliterators.AbstractSpliterator<T>
         implements Consumer<T> {

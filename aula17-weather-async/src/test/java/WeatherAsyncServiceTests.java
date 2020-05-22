@@ -109,10 +109,10 @@ public class WeatherAsyncServiceTests {
                 weather.search("Lisboa")
                         .thenApply(stream ->
                                 stream
-                                        .filter(l -> l.getCountry().equalsIgnoreCase("Portugal"))
-                                        .filter(l -> l.getName().equalsIgnoreCase("Lisboa"))
-                                        .findFirst()
-                                        .get()
+                                .filter(l -> l.getCountry().equalsIgnoreCase("Portugal"))
+                                .filter(l -> l.getName().equalsIgnoreCase("Lisboa"))
+                                .findFirst()
+                                .get()
                         );
 
 

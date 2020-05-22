@@ -99,7 +99,7 @@ public class AsyncFile {
 
                     @Override
                     public void completed(Integer result, Object attachment) {
-                        position += result;
+                        if (result>0) position += result;
                         completed.accept(null,result);
                     }
 
@@ -185,6 +185,69 @@ public class AsyncFile {
     }
 
     //
+    // Stuff needed for asynchronous readline
+    //
+
+    private static final int BUFFER_SIZE= CHUNKSIZE;
+    private static final int MAX_LINE_SIZE = 4096;
+    private static final int LF = '\n';
+    private static final int CR = '\r';
+
+    // the transfer buffer
+    private byte[] auxline = new byte[MAX_LINE_SIZE];
+
+    // buffer for current producing line
+    private byte[] buffer = new byte[1024];
+
+    // read position in buffer
+    int bufpos = BUFFER_SIZE;
+
+    // total bytes in buffer
+    int bufsize=BUFFER_SIZE;
+
+    // current position in producing line
+    int linepos=0;
+
+    private CompletableFuture<String> produceLine() {
+        CompletableFuture<String> newLine = new CompletableFuture<>();
+        try {
+            String line = new String(auxline, 0, linepos, "UTF-8");
+            newLine.complete(line);
+        }
+        catch(UnsupportedEncodingException e) {
+            newLine.completeExceptionally(e);
+        }
+        linepos=0;
+        return newLine;
+    }
+
+    // asynchronous line read operation returning a CompletableFuture<String>
+    public CompletableFuture<String> readLine() {
+        while(bufpos < bufsize) {
+            if (buffer[bufpos] == LF) {
+                if (linepos > 0 && auxline[linepos-1] == CR) linepos--;
+                bufpos++;
+                return produceLine();
+            }
+            else if (linepos == MAX_LINE_SIZE -1) return produceLine();
+            else auxline[linepos++] = buffer[bufpos++];
+        }
+        bufpos = 0;
+        return readBytes(buffer).thenCompose(res -> {
+            if (res <= 0) {
+                bufsize=0;
+                // needed for last line that doesn't end with LF
+                if (linepos > 0) {
+                  return produceLine();
+                }
+                return CompletableFuture.completedFuture(null);
+            }
+            bufsize=res;
+            return readLine();
+        });
+    }
+
+    //
     // auxiliary functions
     //
 
@@ -197,6 +260,8 @@ public class AsyncFile {
                     return copyToSequence(out, ofs+i);
                 });
     }
+
+
 
     // auxiliary function to get file size
     private int getSize() {

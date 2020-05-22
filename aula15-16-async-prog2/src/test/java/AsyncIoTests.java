@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -162,6 +163,30 @@ public class AsyncIoTests {
             });
 
         result.join();
+    }
+
+    CompletableFuture<Void> readLinesFromFileAsync(AsyncFile file, int number) {
+        return file.readLine()
+        .thenCompose(l -> {
+            if (l == null) return CompletableFuture.completedFuture(null);
+            else {
+                System.out.printf("T[%d], L[%d]: %s\n",
+                        Thread.currentThread().getId(),
+                        number,
+                        l);
+                return readLinesFromFileAsync(file, number+1);
+            }
+        });
+    }
+
+    @Test
+    public void ShowLinesOfTextFileWithReadlineTest() {
+        AsyncFile file = AsyncFile.open(UTHREAD_FILE);
+
+        CompletableFuture<Void>  allLines = readLinesFromFileAsync(file,1);
+
+
+        allLines.join();
     }
 
 
@@ -321,7 +346,6 @@ public class AsyncIoTests {
         Stream<Path> files = getFilesFromFolder("rdf-files.tar");
 
 
-
         Stream<CompletableFuture<Long>> futCounts =
                 files.map(p -> {
                     AsyncFile f = AsyncFile.open(p.toString());
@@ -342,5 +366,144 @@ public class AsyncIoTests {
                 + ", done in "
                 + (System.currentTimeMillis()-start) + " ms!");
     }
+
+    private CompletableFuture<Long>
+    countLinesFromAsyncFile(AsyncFile af, long total) {
+        return af.readLine()
+            .thenCompose(l -> {
+                if (l == null) return CompletableFuture.completedFuture(total);
+                else return countLinesFromAsyncFile(af, total+1);
+            });
+    }
+
+    private CompletableFuture<Long> countLinesAsyncFile(AsyncFile af) {
+        return countLinesFromAsyncFile(af,0);
+    }
+
+    @Test
+    public void countLinesOfTextFileWithReadlineTest() {
+        int expectedLines = 526;
+        AsyncFile file = AsyncFile.open(UTHREAD_FILE);
+
+        CompletableFuture<Long>
+                allLines = countLinesAsyncFile(file );
+        long count = allLines.join();
+
+        file.close();
+
+        assertEquals(expectedLines, count);
+        System.out.println("lines: " + count);
+    }
+
+    @Test
+    public void countMultipleFilesLinesWithAsyncFileReadLineTest() {
+        long start = System.currentTimeMillis();
+        Stream<Path> files = getFilesFromFolder("rdf-files.tar");
+
+        System.out.println("Start count!");
+
+
+        Stream<CompletableFuture<Long>> futCounts =
+                files.map(p -> {
+                    AsyncFile f = AsyncFile.open(p.toString());
+                    return  countLinesAsyncFile(f)
+                            .whenComplete((t, s) -> f.close());
+
+                });
+
+
+        CompletableFuture<Long> result = futCounts
+                .reduce((f1,f2) -> {
+                    return f1.thenCombine(f2, (l1,l2)-> l1+l2 );
+                })
+                .orElse(CompletableFuture.completedFuture(0L));
+
+        System.out.println(result.join()
+                + ", done in "
+                + (System.currentTimeMillis()-start) + " ms!");
+    }
+
+    AtomicInteger total =new AtomicInteger(0);
+
+    int getOccurences(String line, String word) {
+        //System.out.println("'" + line + "'" + ": " + word);
+        long res= Arrays.stream(line.split(" "))
+        .filter( w -> w.contains(word))
+        .count();
+
+        total.addAndGet((int)res);
+        return (int) res;
+    }
+
+    @Test
+    public void countWordOccurrencesInMultipleFilesWithCombineTest() {
+        long start = System.currentTimeMillis();
+        Stream<Path> files = getFilesFromFolder("rdf-files.tar");
+        String word = "file";
+        total.set(0);
+
+        Stream<CompletableFuture<Long>> futCounts =
+                files.map(p -> {
+                    AsyncFile f = AsyncFile.open(p.toString());
+                    return f.readLines()
+                            .thenApply( s -> s.map(str -> getOccurences(str, word)))
+                            .thenApply(s -> s.mapToLong(i -> i).sum())
+                            .whenComplete((t, s) -> f.close());
+                });
+
+        System.out.println("Start count!");
+
+        CompletableFuture<Long> result = futCounts
+                .reduce((f1,f2) -> {
+                    return f1.thenCombine(f2, (l1,l2)-> l1+l2 );
+                })
+                .orElse(CompletableFuture.completedFuture(0L));
+        System.out.println(total.get());
+        System.out.println(result.join()
+                + ", done in "
+                + (System.currentTimeMillis()-start) + " ms!");
+    }
+
+    private CompletableFuture<Long>
+    countOccursFromAsyncFile(AsyncFile af, String word, long total) {
+        return af.readLine()
+                .thenCompose(l -> {
+                    if (l == null) return CompletableFuture.completedFuture(total);
+                    //System.out.println(l);
+                    return countOccursFromAsyncFile(af, word, total+ getOccurences(l, word));
+                });
+    }
+
+    private CompletableFuture<Long> countOccursAsyncFile(AsyncFile af, String word) {
+        return countOccursFromAsyncFile(af, word,0);
+    }
+
+    @Test
+    public void countWordOccurrencesInMultipleFilesWithReadLineTest() {
+        long start = System.currentTimeMillis();
+        Stream<Path> files = getFilesFromFolder("rdf-files.tar");
+        String word = "file";
+
+        total.set(0);
+        Stream<CompletableFuture<Long>> futCounts =
+                files.map(p -> {
+                    AsyncFile f = AsyncFile.open(p.toString());
+                    return  countOccursAsyncFile(f, word)
+                            .whenComplete((t, s) -> f.close());
+                });
+
+        System.out.println("Start count!");
+
+        CompletableFuture<Long> result = futCounts
+                .reduce((f1,f2) -> {
+                    return f1.thenCombine(f2, (l1,l2)-> l1+l2 );
+                })
+                .orElse(CompletableFuture.completedFuture(0L));
+        System.out.println("total = " + total.get());
+        System.out.println(result.join()
+                + ", done in "
+                + (System.currentTimeMillis()-start) + " ms!");
+    }
+
 
 }

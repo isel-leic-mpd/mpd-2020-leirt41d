@@ -22,4 +22,4 @@ include 'aula13-streams-revisoes'
 include 'aula14-async-prog'
 include 'aula15-16-async-prog2'
 include 'aula17-weather-async'
-
+include 'aula19-reactive'

@@ -41,6 +41,16 @@ public class WeatherAsyncServiceTests {
         assertEquals(expectedCount,  nLocs);
     }
 
+    private static CompletableFuture<Location> getLisbon(WeatherAsyncService service) {
+        return service.search("Lisboa")
+                .thenApply(
+                        slocs -> slocs.filter(l -> l.getCountry().equalsIgnoreCase("Portugal"))
+                                .filter(l -> l.getName().equalsIgnoreCase("Lisboa"))
+                                .findFirst()
+                                .get()
+                );
+    }
+
     @Test
     public void maxTemperatureDayAtLisbonInMarch2019() {
         LocalDate expectedDate = LocalDate.of(2019,3,15);
@@ -52,6 +62,11 @@ public class WeatherAsyncServiceTests {
                 new WeatherAsyncService(new WeatherAsyncWebApi(new HttpRequest()));
 
         LocalDate maxTempDate = null;
+
+        CompletableFuture<DayInfo> maxTempDayInMarch2019  = null;
+
+
+
         // to complete
         // try to build just one async pipeline and do only join to that
         // pipeline
@@ -83,13 +98,53 @@ public class WeatherAsyncServiceTests {
     public void getTemperaturesOf2and3FebTest() {
         WeatherAsyncService weather =
                 new WeatherAsyncService(new WeatherAsyncWebApi(new HttpRequest()));
+        LocalDate start_date = LocalDate.of(2019, 2, 2);
+        LocalDate end_date = LocalDate.of(2019, 2, 3);
 
-        CompletableFuture<Stream<WeatherInfo>> futTemps =  null;
+        CompletableFuture<Long> futTemps =  null;
         // to complete
         // try to build just one async pipeline and do only join to that
         // pipeline
+        /*
+        futTemps =
+                getLisbon(weather)
+                .thenCompose(l ->
+                    weather.pastWeather(
+                            l, start_date, end_date, 1)
+                )
+                .thenApply( s -> s.count());
+        */
 
-        assertEquals(48, futTemps.join().count());
+        /*
+        futTemps = getLisbon(weather)
+        .thenCompose(l -> l.getDays(start_date, end_date))
+        .thenCompose( stream -> {
+            CompletableFuture<Long>[] tempCounts =
+                    stream.map( d -> d.getTemperatures()
+                             .thenApply(s -> s.count()))
+                    .toArray(sz -> new CompletableFuture[sz]);
+
+            return allOf(tempCounts)
+            .thenApply(__ ->
+                Arrays.stream(tempCounts)
+                .mapToLong(cf -> cf.join())
+                .sum()
+            );
+        });
+         */
+
+        futTemps = getLisbon(weather)
+                .thenCompose(l -> l.getDays(start_date, end_date))
+                .thenCompose( stream ->
+                    stream.map( d -> d.getTemperatures())
+                    .reduce((cf1, cf2) ->
+                        cf1.thenCombine(cf2, (l1, l2) ->
+                                Stream.concat(l1,l2))).get()
+                )
+                .thenApply(s -> s.count());
+
+
+        assertEquals(48, futTemps.join().intValue());
 
     }
 
@@ -140,7 +195,6 @@ public class WeatherAsyncServiceTests {
         // validations
         assertEquals(expectedMaxTemp, day.getMaxTemp());
         assertEquals(expectedDate, day.getDate());
-
 
     }
 

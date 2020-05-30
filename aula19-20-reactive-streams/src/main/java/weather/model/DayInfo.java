@@ -69,6 +69,7 @@ public class DayInfo {
                 + ", moonrise=" + moonrise
                 + ", moonset="  + moonset
                 + ", illum="    + moon_illumination
+                + ", mn_phase=" + moon_phase
                 + "}";
     }
 

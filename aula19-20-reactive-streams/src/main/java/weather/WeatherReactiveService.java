@@ -3,6 +3,8 @@ package weather;
 import io.reactivex.Observable;
 import weather.dto.*;
 import weather.model.*;
+
+import static io.reactivex.Observable.fromFuture;
 import static weather.utils.ObservableUtils.*;
 
 import java.time.LocalDate;
@@ -20,7 +22,7 @@ public class WeatherReactiveService {
 
     public Observable<Location>
     search(String query) {
-        return Observable.fromFuture(api.search(query))
+        return fromCompletableFuture(api.search(query))
                 .map(s -> s.toArray(sz-> new LocationDto[sz]))
                 .flatMap(a -> Observable.fromArray(a))
                 .map(this::dtoToLocation);
@@ -30,7 +32,7 @@ public class WeatherReactiveService {
     public Observable<WeatherInfo> pastWeather(
             Location loc, LocalDate from, LocalDate to, int period) {
 
-        return Observable.fromFuture(
+        return fromCompletableFuture(
                 api.pastWeather(loc.getLatitude(), loc.getLongitude(), from, to, period)
                 )
                 .map(s -> s.toArray(sz -> new WeatherInfoDto[sz]))
@@ -40,7 +42,7 @@ public class WeatherReactiveService {
 
     public Observable<DayInfo>
     pastDays(Location loc, LocalDate from, LocalDate to) {
-        return Observable.fromFuture(
+        return fromCompletableFuture(
                 api.pastDays(loc.getLatitude(), loc.getLongitude(), from,to))
                 .map(s -> s.toArray(sz -> new DayInfoDto[sz]))
                 .flatMap(a -> Observable.fromArray(a))

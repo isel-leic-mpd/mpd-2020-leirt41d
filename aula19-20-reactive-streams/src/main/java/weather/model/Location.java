@@ -21,6 +21,11 @@ public class Location {
                         LocalDate,
                         Observable<DayInfo>> pastDays;
 
+    public static Location of(double latitude, double longitude) {
+        return new Location(null,null,latitude,longitude,null);
+    }
+
+
     public Location(String name,
                     String country,   double latitude,
                     double longitude,
@@ -45,6 +50,7 @@ public class Location {
 
     public Observable<DayInfo>
     getDays(LocalDate from, LocalDate to)  {
+
         return pastDays.apply(this, from,to);
     }
 

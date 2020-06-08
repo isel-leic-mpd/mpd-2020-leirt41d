@@ -12,12 +12,23 @@ import weather.utils.HttpRequest;
 
 import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 import static java.time.LocalDate.of;
+import static java.util.function.Function.identity;
 import static org.junit.Assert.assertEquals;
 
 
 public class WeatherReactiveServiceTests {
+
+    private void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        }
+        catch(InterruptedException e) {
+
+        }
+    }
 
     private static Observable<Location>
     getLisbon(WeatherReactiveService service) {
@@ -55,6 +66,8 @@ public class WeatherReactiveServiceTests {
 
 
         DayInfo dMax = maxDay.blockingGet();
+        DayInfo dMax2 = maxDay.blockingGet();
+
         assertEquals(expectedDate, dMax.getDate() );
     }
 
@@ -131,12 +144,59 @@ public class WeatherReactiveServiceTests {
         LocalDate start_date = of(2019, 2, 2);
         LocalDate end_date = of(2019, 2, 3);
 
+        Observable<WeatherInfo> temps =
+            getLisbon(weather)
+            .flatMap(l -> l.getDays(start_date, end_date))
+            .flatMap( d -> d.getTemperatures());
 
-        long countTemps= 0;
+        long[] countTemps = {0};
+        CompletableFuture<Void> done = new CompletableFuture<>();
+
+        temps.subscribe(new Observer() {
+            @Override
+            public void onSubscribe(Disposable d) { }
+
+            @Override
+            public void onNext(Object o) { countTemps[0]++;  }
+
+            @Override
+            public void onError(Throwable e) {
+                done.completeExceptionally(e);
+            }
+
+            @Override
+            public void onComplete() {
+                done.complete(null);
+            }
+        });
+
+
+        temps.subscribe(
+                wi -> System.out.println(wi));
+        done.join();
+
+
+        /*
+        Single<Long> countTemp = temps.count();
+
+        long countTemps = countTemp.blockingGet();
+        */
+
         // to complete
-        assertEquals(48, countTemps );
+        assertEquals(48, countTemps[0] );
     }
 
+
+    @Test
+    public void multipleObserversTest() {
+        Observable<Integer> numbers =
+                Observable.just(2,3, 4);
+
+        numbers.subscribe(System.out::println);
+
+        numbers.subscribe(System.out::println);
+
+    }
 
     @Test
     public void maxTemperatureDayAtLisbonIn2019() {
@@ -152,28 +212,35 @@ public class WeatherReactiveServiceTests {
 
         long start = System.currentTimeMillis();
 
-        /*
+
         Observable<DayInfo> maxTempDay =
                 getLisbon(weather)
                 .flatMap(l -> {
-                   Observable<Integer> o1 =
+                    Observable<Integer> o1 =
                            Observable.range(1, 12);
 
-                   Observable<Integer> o2 = Observable.fromArray(monthDays);
+                    Observable<Integer> o2 = Observable.fromArray(monthDays);
 
-                   return o1.zipWith(o2, (i1, i2 ) ->
+                    Observable<Observable<DayInfo>> oo = o1.zipWith(o2, (i1, i2 ) ->
                            l.getDays(LocalDate.of(2019, i1, 1),
                                      LocalDate.of(2019, i1, i2)));
-                   // to complete
-                });
-        // to complete
+                    return oo;
 
-        */
+
+                    // to complete
+                })
+                .flatMap( o -> o);
+
+        maxTempDay.subscribe(System.out::println);
+
+        sleep(10000);
 
         int expectedMaxTemp = 36;
+        DayInfo maxDay = null;
         LocalDate expectedDate = LocalDate.of(2019,5,30);
 
-        DayInfo maxDay = null;
+        //System.out.println("Now get the day");
+
         // validations
         System.out.println("done in " + (System.currentTimeMillis()-start) + "ms");
 

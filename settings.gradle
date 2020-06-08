@@ -24,4 +24,5 @@ include 'aula15-16-async-prog2'
 include 'aula17-weather-async'
 include 'aula19-20-reactive-streams'
 include 'aula22-weather-web'
+include 'Exercicios'
 

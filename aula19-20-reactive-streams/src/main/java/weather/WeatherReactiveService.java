@@ -42,7 +42,7 @@ public class WeatherReactiveService {
 
     public Observable<DayInfo>
     pastDays(Location loc, LocalDate from, LocalDate to) {
-        return fromCompletableFuture(
+        return fromFuture(
                 api.pastDays(loc.getLatitude(), loc.getLongitude(), from,to))
                 .map(s -> s.toArray(sz -> new DayInfoDto[sz]))
                 .flatMap(a -> Observable.fromArray(a))
@@ -50,16 +50,13 @@ public class WeatherReactiveService {
 
     }
 
-
     public  Location dtoToLocation(LocationDto dto) {
-
         return new Location(dto.getName(),
                 dto.getCountry(),
                 dto.getLatitude(),
                 dto.getLongitude(),
                 this::pastDays
         );
-
     }
 
     public  WeatherInfo dtoToWeatherInfo(WeatherInfoDto dto) {

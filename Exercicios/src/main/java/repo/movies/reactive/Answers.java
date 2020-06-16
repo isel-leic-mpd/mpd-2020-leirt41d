@@ -15,7 +15,23 @@ public class Answers {
     Observable<Movie>
     getFavouritesMovies(int userId)  {
         // to complete
-        return null;
+        Observable<String> titles =  getFavouritesMoviesTitles(userId).cache();
+        Observable<Double> ratings = titles.flatMap(t -> getRating(t));
+
+        return titles.zipWith(ratings, (t,r)-> new Movie(t,r));
+
+    }
+
+    // a)
+    // use the SocialApi and MovieApi classes of this package
+    Observable<Movie>
+    getFavouritesMovies3(int userId)  {
+        // to complete
+        Observable<String> titles =  getFavouritesMoviesTitles(userId).cache();
+        return titles.flatMap(t -> getRating(t)
+                                    .map(r-> new Movie(t,r)));
+
+
     }
 
 
